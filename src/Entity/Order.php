@@ -34,11 +34,19 @@ class Order
 
     #[ORM\ManyToOne(inversedBy: 'orders', cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false, referencedColumnName: "uuid")]
-    private ?Coupon $coupon_id = null;
+    private ?Coupon $coupon = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false, referencedColumnName: "uuid")]
     private ?OrderHeader $order_header = null;
+
+    #[ORM\OneToMany(mappedBy: 'order_id', targetEntity: OrderLine::class, orphanRemoval: true)]
+    private Collection $orderLines;
+
+    public function __construct()
+    {
+        $this->orderLines = new ArrayCollection();
+    }
 
     public function getOrganizationId(): ?Uuid
     {
@@ -102,12 +110,12 @@ class Order
 
     public function getCouponId(): ?Coupon
     {
-        return $this->coupon_id;
+        return $this->coupon;
     }
 
     public function setCouponId(?Coupon $coupon_id): self
     {
-        $this->coupon_id = $coupon_id;
+        $this->coupon = $coupon_id;
 
         return $this;
     }
@@ -120,6 +128,36 @@ class Order
     public function setOrderHeader(OrderHeader $order_header): self
     {
         $this->order_header = $order_header;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, OrderLine>
+     */
+    public function getProductUuid(): Collection
+    {
+        return $this->orderLines;
+    }
+
+    public function addProductUuid(OrderLine $orderLines): self
+    {
+        if (!$this->orderLines->contains($orderLines)) {
+            $this->orderLines->add($orderLines);
+            $orderLines->setOrderId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProductUuid(OrderLine $orderLines): self
+    {
+        if ($this->orderLines->removeElement($orderLines)) {
+            // set the owning side to null (unless already changed)
+            if ($orderLines->getOrderId() === $this) {
+                $orderLines->setOrderId(null);
+            }
+        }
 
         return $this;
     }

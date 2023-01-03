@@ -25,6 +25,14 @@ class OrderLine
     #[ORM\Column]
     private ?float $total = null;
 
+    #[ORM\ManyToOne(inversedBy: 'orderLines')]
+    #[ORM\JoinColumn(nullable: false, referencedColumnName: "uuid")]
+    private ?Order $order = null;
+
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false, referencedColumnName: "uuid")]
+    private ?Product $product = null;
+
     public function getQuantity(): ?int
     {
         return $this->quantity;
@@ -69,6 +77,30 @@ class OrderLine
     public function setTotal(float $total): self
     {
         $this->total = $total;
+
+        return $this;
+    }
+
+    public function getOrderId(): ?Order
+    {
+        return $this->order;
+    }
+
+    public function setOrderId(?Order $order_id): self
+    {
+        $this->order = $order_id;
+
+        return $this;
+    }
+
+    public function getProductId(): ?Product
+    {
+        return $this->product;
+    }
+
+    public function setProductId(?Product $product_uuid): self
+    {
+        $this->product = $product_uuid;
 
         return $this;
     }
