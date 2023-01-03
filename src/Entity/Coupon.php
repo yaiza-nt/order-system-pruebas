@@ -61,6 +61,10 @@ class Coupon
     #[ORM\OneToMany(mappedBy: 'coupon', targetEntity: Order::class)]
     private Collection $orders;
 
+    #[ORM\ManyToOne(inversedBy: 'coupons')]
+    #[ORM\JoinColumn(nullable: false, referencedColumnName: "uuid")]
+    private ?Product $product = null;
+
     public function __construct()
     {
         $this->orders = new ArrayCollection();
@@ -260,6 +264,18 @@ class Coupon
                 $order->setCouponId(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getProduct(): ?Product
+    {
+        return $this->product;
+    }
+
+    public function setProduct(?Product $product): self
+    {
+        $this->product = $product;
 
         return $this;
     }

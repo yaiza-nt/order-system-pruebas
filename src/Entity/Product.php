@@ -30,9 +30,13 @@ class Product
     #[ORM\ManyToMany(targetEntity: Pack::class, mappedBy: 'products')]
     private Collection $packs;
 
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: Coupon::class, orphanRemoval: true)]
+    private Collection $coupons;
+
     public function __construct()
     {
         $this->packs = new ArrayCollection();
+        $this->coupons = new ArrayCollection();
     }
 
     public function getName(): ?string
@@ -105,6 +109,36 @@ class Product
     {
         if ($this->packs->removeElement($pack)) {
             $pack->removeProduct($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Coupon>
+     */
+    public function getCoupons(): Collection
+    {
+        return $this->coupons;
+    }
+
+    public function addCoupon(Coupon $coupon): self
+    {
+        if (!$this->coupons->contains($coupon)) {
+            $this->coupons->add($coupon);
+            $coupon->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCoupon(Coupon $coupon): self
+    {
+        if ($this->coupons->removeElement($coupon)) {
+            // set the owning side to null (unless already changed)
+            if ($coupon->getProduct() === $this) {
+                $coupon->setProduct(null);
+            }
         }
 
         return $this;
