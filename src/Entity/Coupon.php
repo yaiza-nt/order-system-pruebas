@@ -58,7 +58,7 @@ class Coupon
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $last_used = null;
 
-    #[ORM\OneToMany(mappedBy: 'coupon_id', targetEntity: Order::class)]
+    #[ORM\OneToMany(mappedBy: 'coupon', targetEntity: Order::class)]
     private Collection $orders;
 
     public function __construct()

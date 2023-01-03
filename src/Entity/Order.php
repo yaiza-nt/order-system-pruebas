@@ -40,7 +40,7 @@ class Order
     #[ORM\JoinColumn(nullable: false, referencedColumnName: "uuid")]
     private ?OrderHeader $order_header = null;
 
-    #[ORM\OneToMany(mappedBy: 'order_id', targetEntity: OrderLine::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'order', targetEntity: OrderLine::class, orphanRemoval: true)]
     private Collection $orderLines;
 
     public function __construct()
