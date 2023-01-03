@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Entity\Trait\EntityTrait;
 use App\Repository\CouponRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -55,6 +57,14 @@ class Coupon
 
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $last_used = null;
+
+    #[ORM\OneToMany(mappedBy: 'coupon_id', targetEntity: Order::class)]
+    private Collection $orders;
+
+    public function __construct()
+    {
+        $this->orders = new ArrayCollection();
+    }
 
     public function getCode(): ?string
     {
@@ -220,6 +230,36 @@ class Coupon
     public function setLastUsed(?\DateTimeImmutable $last_used): self
     {
         $this->last_used = $last_used;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Order>
+     */
+    public function getOrders(): Collection
+    {
+        return $this->orders;
+    }
+
+    public function addOrder(Order $order): self
+    {
+        if (!$this->orders->contains($order)) {
+            $this->orders->add($order);
+            $order->setCouponId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrder(Order $order): self
+    {
+        if ($this->orders->removeElement($order)) {
+            // set the owning side to null (unless already changed)
+            if ($order->getCouponId() === $this) {
+                $order->setCouponId(null);
+            }
+        }
 
         return $this;
     }

@@ -32,6 +32,14 @@ class Order
     #[ORM\Column]
     private ?int $origin = null;
 
+    #[ORM\ManyToOne(inversedBy: 'orders', cascade: ['persist'])]
+    #[ORM\JoinColumn(nullable: false, referencedColumnName: "uuid")]
+    private ?Coupon $coupon_id = null;
+
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false, referencedColumnName: "uuid")]
+    private ?OrderHeader $order_header = null;
+
     public function getOrganizationId(): ?Uuid
     {
         return $this->organization_id;
@@ -88,6 +96,30 @@ class Order
     public function setOrigin(int $origin): self
     {
         $this->origin = $origin;
+
+        return $this;
+    }
+
+    public function getCouponId(): ?Coupon
+    {
+        return $this->coupon_id;
+    }
+
+    public function setCouponId(?Coupon $coupon_id): self
+    {
+        $this->coupon_id = $coupon_id;
+
+        return $this;
+    }
+
+    public function getOrderHeader(): ?OrderHeader
+    {
+        return $this->order_header;
+    }
+
+    public function setOrderHeader(OrderHeader $order_header): self
+    {
+        $this->order_header = $order_header;
 
         return $this;
     }
