@@ -27,6 +27,14 @@ class Product
     #[ORM\Column]
     private ?int $type = null;
 
+    #[ORM\ManyToMany(targetEntity: Pack::class, mappedBy: 'products')]
+    private Collection $packs;
+
+    public function __construct()
+    {
+        $this->packs = new ArrayCollection();
+    }
+
     public function getName(): ?string
     {
         return $this->name;
@@ -71,6 +79,33 @@ class Product
     public function setType(int $type): self
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Pack>
+     */
+    public function getPacks(): Collection
+    {
+        return $this->packs;
+    }
+
+    public function addPack(Pack $pack): self
+    {
+        if (!$this->packs->contains($pack)) {
+            $this->packs->add($pack);
+            $pack->addProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removePack(Pack $pack): self
+    {
+        if ($this->packs->removeElement($pack)) {
+            $pack->removeProduct($this);
+        }
 
         return $this;
     }
