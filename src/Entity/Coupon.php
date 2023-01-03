@@ -16,7 +16,7 @@ class Coupon
 {
     use EntityTrait;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, unique: true)]
     private ?string $code = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
