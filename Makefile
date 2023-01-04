@@ -5,3 +5,7 @@ migrations-migrate:
 	cd app && php bin/console --no-interaction  doctrine:migrations:migrate
 migrations-create:
 	cd app && php bin/console make:migration
+
+#entities
+entity-create:
+	cd app && php bin/console make:entity
