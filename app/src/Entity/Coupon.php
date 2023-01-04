@@ -65,9 +65,16 @@ class Coupon
     #[ORM\JoinColumn(nullable: false, referencedColumnName: "uuid")]
     private ?Product $product = null;
 
+    #[ORM\JoinTable(name: 'coupon_validations')]
+    #[ORM\JoinColumn(name: 'coupon_id', referencedColumnName: 'uuid')]
+    #[ORM\InverseJoinColumn(name: 'validation_id', referencedColumnName: 'uuid')]
+    #[ORM\ManyToMany(targetEntity: Validation::class, inversedBy: 'coupons_related')]
+    private Collection $validations;
+
     public function __construct()
     {
         $this->orders = new ArrayCollection();
+        $this->validations = new ArrayCollection();
     }
 
     public function getCode(): ?string
@@ -276,6 +283,30 @@ class Coupon
     public function setProduct(?Product $product): self
     {
         $this->product = $product;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Validation>
+     */
+    public function getValidations(): Collection
+    {
+        return $this->validations;
+    }
+
+    public function addValidation(Validation $validation): self
+    {
+        if (!$this->validations->contains($validation)) {
+            $this->validations->add($validation);
+        }
+
+        return $this;
+    }
+
+    public function removeValidation(Validation $validation): self
+    {
+        $this->validations->removeElement($validation);
 
         return $this;
     }

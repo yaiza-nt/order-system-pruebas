@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Entity\Trait\EntityTrait;
 use App\Repository\ValidationRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -28,6 +30,14 @@ class Validation
 
     #[ORM\Column]
     private array $values_applied = [];
+
+    #[ORM\ManyToMany(targetEntity: Coupon::class, mappedBy: 'validations')]
+    private Collection $coupons_related;
+
+    public function __construct()
+    {
+        $this->coupons_related = new ArrayCollection();
+    }
 
 
     public function getName(): ?string
@@ -86,6 +96,33 @@ class Validation
     public function setValuesApplied(array $values_applied): self
     {
         $this->values_applied = $values_applied;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Coupon>
+     */
+    public function getCouponsRelated(): Collection
+    {
+        return $this->coupons_related;
+    }
+
+    public function addCouponsRelated(Coupon $couponsRelated): self
+    {
+        if (!$this->coupons_related->contains($couponsRelated)) {
+            $this->coupons_related->add($couponsRelated);
+            $couponsRelated->addValidation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCouponsRelated(Coupon $couponsRelated): self
+    {
+        if ($this->coupons_related->removeElement($couponsRelated)) {
+            $couponsRelated->removeValidation($this);
+        }
 
         return $this;
     }
