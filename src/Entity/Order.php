@@ -36,10 +36,6 @@ class Order
     #[ORM\JoinColumn(nullable: false, referencedColumnName: "uuid")]
     private ?Coupon $coupon = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false, referencedColumnName: "uuid")]
-    private ?OrderHeader $order_header = null;
-
     #[ORM\OneToMany(mappedBy: 'order', targetEntity: OrderLine::class, orphanRemoval: true)]
     private Collection $orderLines;
 
@@ -116,18 +112,6 @@ class Order
     public function setCouponId(?Coupon $coupon_id): self
     {
         $this->coupon = $coupon_id;
-
-        return $this;
-    }
-
-    public function getOrderHeader(): ?OrderHeader
-    {
-        return $this->order_header;
-    }
-
-    public function setOrderHeader(OrderHeader $order_header): self
-    {
-        $this->order_header = $order_header;
 
         return $this;
     }

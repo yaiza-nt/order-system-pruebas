@@ -33,9 +33,6 @@ final class Version20230103123907 extends AbstractMigration
         $this->addSql('COMMENT ON COLUMN "order".cancelled_at IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('COMMENT ON COLUMN "order".created_at IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('COMMENT ON COLUMN "order".updated_at IS \'(DC2Type:datetime_immutable)\'');
-        $this->addSql('CREATE TABLE order_header (uuid UUID NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(uuid))');
-        $this->addSql('COMMENT ON COLUMN order_header.created_at IS \'(DC2Type:datetime_immutable)\'');
-        $this->addSql('COMMENT ON COLUMN order_header.updated_at IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('CREATE TABLE order_line (uuid UUID NOT NULL, quantity INT NOT NULL, amount DOUBLE PRECISION NOT NULL, discount DOUBLE PRECISION DEFAULT NULL, total DOUBLE PRECISION NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(uuid))');
         $this->addSql('COMMENT ON COLUMN order_line.created_at IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('COMMENT ON COLUMN order_line.updated_at IS \'(DC2Type:datetime_immutable)\'');
@@ -53,7 +50,6 @@ final class Version20230103123907 extends AbstractMigration
         $this->addSql('CREATE SCHEMA public');
         $this->addSql('DROP TABLE coupon');
         $this->addSql('DROP TABLE "order"');
-        $this->addSql('DROP TABLE order_header');
         $this->addSql('DROP TABLE order_line');
         $this->addSql('DROP TABLE pack');
         $this->addSql('DROP TABLE product');
