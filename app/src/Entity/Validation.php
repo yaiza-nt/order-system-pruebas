@@ -22,8 +22,8 @@ class Validation
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
-    #[ORM\Column]
-    private ?int $table_related = null;
+    #[ORM\Column(length: 255)]
+    private ?string $table_related = null;
 
     #[ORM\Column]
     private array $check_applied = [];
@@ -64,12 +64,12 @@ class Validation
         return $this;
     }
 
-    public function getTableRelated(): ?int
+    public function getTableRelated(): ?string
     {
         return $this->table_related;
     }
 
-    public function setTableRelated(int $table_related): self
+    public function setTableRelated(string $table_related): self
     {
         $this->table_related = $table_related;
 
