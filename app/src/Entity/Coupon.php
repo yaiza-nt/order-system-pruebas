@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\Trait\EntityTrait;
 use App\Repository\CouponRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -12,6 +13,12 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: CouponRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 
+// API
+#[ApiResource(
+    routePrefix: "order_system/products",
+    collectionOperations: ['get', 'post'],
+    itemOperations: ['get', 'patch']
+)]
 class Coupon
 {
     use EntityTrait;

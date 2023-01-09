@@ -18,7 +18,7 @@ use Symfony\Component\Uid\Uuid;
 #[ApiResource(
     routePrefix: "order_system/orders",
     collectionOperations: ['get', 'post'],
-    itemOperations: ['get']
+    itemOperations: ['get', 'patch']
 )]
 class Order
 {
@@ -40,7 +40,7 @@ class Order
     private ?int $origin = null;
 
     #[ORM\ManyToOne(inversedBy: 'orders', cascade: ['persist'])]
-    #[ORM\JoinColumn(nullable: false, referencedColumnName: "uuid")]
+    #[ORM\JoinColumn(nullable: true, referencedColumnName: "uuid")]
     private ?Coupon $coupon = null;
 
     #[ORM\OneToMany(mappedBy: 'order', targetEntity: OrderLine::class, orphanRemoval: true)]

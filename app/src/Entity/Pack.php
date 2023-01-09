@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\Trait\EntityTrait;
 use App\Repository\PackRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -11,6 +12,12 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: PackRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 
+// API
+#[ApiResource(
+    routePrefix: "order_system/packs",
+    collectionOperations: ['get', 'post'],
+    itemOperations: ['get', 'patch']
+)]
 class Pack
 {
     use EntityTrait;

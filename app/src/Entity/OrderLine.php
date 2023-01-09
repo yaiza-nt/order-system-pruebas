@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\Trait\EntityTrait;
 use App\Repository\OrderLineRepository;
 use Doctrine\ORM\Mapping as ORM;
@@ -9,6 +10,12 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: OrderLineRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 
+// API
+#[ApiResource(
+    routePrefix: "order_system/order_line",
+    collectionOperations: ['get', 'post'],
+    itemOperations: ['get', 'patch', 'delete']
+)]
 class OrderLine
 {
     use EntityTrait;
