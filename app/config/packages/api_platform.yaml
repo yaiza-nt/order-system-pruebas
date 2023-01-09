@@ -1,0 +1,24 @@
+api_platform:
+    defaults:
+        pagination_enabled: true
+        pagination_client_enabled: true
+        pagination_client_items_per_page: true
+    mapping:
+        paths: ['%kernel.project_dir%/src/Entity']
+    formats:
+        json:     ['application/json']
+        jsonld:   ['application/ld+json']
+        jsonapi:  ['application/vnd.api+json']
+        html:     ['text/html']
+    patch_formats:
+        json: ['application/merge-patch+json']
+        jsonapi:  ['application/vnd.api+json']
+    swagger:
+        versions: [3]
+        api_keys:
+             apiKey:
+                name: Authorization
+                type: header
+    resource_class_directories:
+        - '%kernel.project_dir%/src/Entity'
+    metadata_backward_compatibility_layer: false    

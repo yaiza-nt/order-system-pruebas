@@ -24,6 +24,14 @@ migrations-migrate:
 migrations-create:
 	${DOCKER_EXEC} "cd app && php bin/console make:migration"
 
+# symfomy cache
+cache-clear:
+	${DOCKER_EXEC} "cd app && php bin/console cache:clear"
+
+# composer
+composer-install:
+	${DOCKER_EXEC} "cd app && composer install"
+
 #entities
 entity-create:
 	${DOCKER_EXEC} "cd app && php bin/console make:entity"

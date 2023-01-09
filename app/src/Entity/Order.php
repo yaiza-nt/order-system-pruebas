@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\Trait\EntityTrait;
 use App\Repository\OrderRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -13,6 +14,12 @@ use Symfony\Component\Uid\Uuid;
 #[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: '`order`')]
 
+// API
+#[ApiResource(
+    routePrefix: "order_system/orders",
+    collectionOperations: ['get', 'post'],
+    itemOperations: ['get']
+)]
 class Order
 {
     use EntityTrait;
